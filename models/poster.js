@@ -2,13 +2,13 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
-class User extends Model {
+class Poster extends Model {
     checkPassword(loginPw) {
         return bcrypt.compareSync(loginPw, this.password);
     }
 }
 
-User.init(
+Poster.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ User.init(
             validate: {
                 // RegExr to allwo below syntax
                 // Also allows spaces between words only, a space on it's own should not be accepted.
-                is: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$'
+                is: /^[a-zA-Z0-9\s]+$/i
             }
         },
         password: {
@@ -51,8 +51,8 @@ User.init(
         sequelize,
         timestamps: false,
         underscored: true,
-        modelName: 'users',
+        freezeTableName: true,
       },
 )
 
-module.exports = User;
+module.exports = Poster;
